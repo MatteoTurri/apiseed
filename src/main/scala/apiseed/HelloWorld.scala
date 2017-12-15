@@ -1,6 +1,6 @@
 package apiseed
 
-import scala.concurrent.Future
+import scala.concurrent.{Future, ExecutionContext}
 import wiro.annotation._
 
 @path("apiseed")
@@ -10,13 +10,10 @@ trait HelloWorldApi {
   def helloworld(): Future[Either[Throwable, String]]
 }
 
-class HelloWorldApiImpl() extends HelloWorldApi {
-  import scala.concurrent.ExecutionContext.Implicits.global
+class HelloWorldApiImpl(implicit ec: ExecutionContext) extends HelloWorldApi {
 
-  override def helloworld(): Future[Either[Throwable, String]] = {
-    Future {
-      Right("Hello world!")
-    }
+  override def helloworld(): Future[Either[Throwable, String]] = Future {
+    Right("Hello world!")
   }
 }
 

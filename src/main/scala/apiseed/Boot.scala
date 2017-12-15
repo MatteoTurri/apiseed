@@ -7,17 +7,19 @@ import wiro.Config
 import wiro.server.akkaHttp._
 import wiro.server.akkaHttp.FailSupport._
 
-object Router extends App with RouterDerivationModule {
+import com.typesafe.config.ConfigFactory
+
+object Boot extends App with WiroCodecs with RouterDerivationModule {
   implicit val system = ActorSystem("apiseed")
   implicit val materializer = ActorMaterializer()
   implicit val executionContext = system.dispatcher
 
-  implicit val throwableToResponse: ToHttpResponse[Throwable] = null
-
   val helloworldRouter = deriveRouter[HelloWorldApi](new HelloWorldApiImpl)
 
+  val conf = ConfigFactory.load()
+
   val rpcServer = new HttpRPCServer(
-    config = Config("localhost", 8080),
+    config = Config(conf.getString("apiseed.host"), conf.getInt("apiseed.port")),
     routers = List(helloworldRouter)
   )
 }
