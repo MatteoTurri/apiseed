@@ -5,6 +5,8 @@ lazy val circeGeneric = "io.circe" %% "circe-generic" % "0.8.0"
 lazy val wiroHttpServer = "io.buildo" %% "wiro-http-server" % "0.5.2"
 lazy val scalatest = "org.scalatest" %% "scalatest" % "3.0.4" % "test"
 lazy val typesafeConfig = "com.typesafe" % "config" % "1.3.2"
+lazy val enumero = "io.buildo" %% "enumero" % "1.2.1"
+lazy val enumeroCirceSupport = "io.buildo" %% "enumero-circe-support" % "1.2.1"  
 lazy val root = project.in(file("."))
   .settings(
     name := "apiseed",
@@ -17,7 +19,9 @@ lazy val root = project.in(file("."))
       circeGeneric,
       wiroHttpServer,
       scalatest,
-      typesafeConfig
+      typesafeConfig,
+      enumero,
+      enumeroCirceSupport
     ),
     addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
   )

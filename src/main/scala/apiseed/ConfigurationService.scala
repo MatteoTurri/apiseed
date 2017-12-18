@@ -2,10 +2,16 @@ package apiseed
 
 import scala.concurrent.{Future, ExecutionContext}
 import apiseed.model.Configuration
+import apiseed.error.ApiError
 
 class ConfigurationService(repository: ConfigurationRepository)(implicit ec: ExecutionContext) {
 
-  def readAll(): Future[Either[Throwable, List[Configuration]]] = Future {
+  def readAll(): Future[Either[ApiError, List[Configuration]]] = Future {
     Right(repository.configurations)
+  }
+
+  def readById(id: String): Future[Either[ApiError, Configuration]] = Future {
+    val result: Option[Configuration] = repository.findById(id)
+    result.map(conf => Right(conf)).getOrElse(Left(ApiError.ConfigNotFoundError))
   }
 }
