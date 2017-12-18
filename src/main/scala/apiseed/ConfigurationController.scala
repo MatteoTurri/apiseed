@@ -13,8 +13,6 @@ trait ConfigurationApi {
 
 class ConfigurationApiImpl(service: ConfigurationService)(implicit ec: ExecutionContext) extends ConfigurationApi {
 
-  override def readAll(): Future[Either[Throwable, List[Configuration]]] = {
-    service.readAll()
-  }
+  override def readAll(): Future[Either[Throwable, List[Configuration]]] = service.readAll()
 }
 
