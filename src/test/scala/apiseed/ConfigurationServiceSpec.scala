@@ -9,7 +9,7 @@ class ConfigurationServiceSpec extends AsyncFlatSpec with Matchers {
     val service = new ConfigurationService(repo)
     service.readAll().map(_.fold(
       error => fail(error.toString),
-      result => result shouldBe List()
+      result => result shouldBe empty
     ))
   }
 }
