@@ -3,12 +3,13 @@ package apiseed
 import scala.concurrent.Future
 import org.scalatest._
 
-class HelloWorldSpec extends AsyncFlatSpec with Matchers {
-  "The controller" should "return \"Hello world!\" when the helloworld method is invoked" in {
-    val apiImpl = new HelloWorldApiImpl()
-    apiImpl.helloworld().map(_.fold(
+class ConfigurationServiceSpec extends AsyncFlatSpec with Matchers {
+  "The service" should "return an empty list when the readAll method is invoked" in {
+    val repo = new ConfigurationRepository()
+    val service = new ConfigurationService(repo)
+    service.readAll().map(_.fold(
       error => fail(error.toString),
-      result => result shouldBe "Hello world!"
+      result => result shouldBe List()
     ))
   }
 }
