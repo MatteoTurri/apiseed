@@ -1,5 +1,4 @@
 package apiseed
-package test
 
 import scala.concurrent.Future
 import org.scalatest._
