@@ -5,6 +5,9 @@ import org.scalatest._
 import apiseed.error.ApiError
 
 class ConfigurationServiceSpec extends AsyncFlatSpec with Matchers {
+
+  val foo = "foo"
+  val errorMessage = "Api should return an error"
   val repo = new ConfigurationRepository()
   val service = new ConfigurationService(repo)
   
@@ -16,9 +19,16 @@ class ConfigurationServiceSpec extends AsyncFlatSpec with Matchers {
   }
 
   "The service" should "return ConfigNotFoundError when the readById method is invoked passing the id of a non-existing configuration" in {
-    service.readById("foo").map(_.fold(
+    service.readById(foo).map(_.fold(
       error => error shouldBe ApiError.ConfigNotFoundError,
-      result => fail("Api should return an error")
+      result => fail(errorMessage)
+    ))
+  }
+
+  "The service" should "return ConfigNotFoundError when the delete method is invoked passing the id of a non-existing configuration" in {
+    service.delete(foo).map(_.fold(
+      error => error shouldBe ApiError.ConfigNotFoundError,
+      result => fail(errorMessage)
     ))
   }
 }
