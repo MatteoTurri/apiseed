@@ -16,4 +16,8 @@ class ConfigurationService(repository: ConfigurationRepository)(implicit ec: Exe
       case None => Left(ApiError.ConfigNotFoundError)
     }
   }
+
+  def delete(id: String): Future[Either[ApiError, Unit]] = Future {
+    repository.delete(id)
+  }
 }
