@@ -12,10 +12,12 @@ import io.circe.generic.auto._
 import io.buildo.enumero.circe._
 
 trait WiroCodecs {
-  implicit def apiErrorToResponse: ToHttpResponse[ApiError] =
-    error => HttpResponse(
-      status = StatusCodes.NotFound,
-      entity = HttpEntity(ContentType(MediaTypes.`application/json`), error.asJson.noSpaces)
-    )
+  implicit def apiErrorToResponse: ToHttpResponse[ApiError] = error =>
+    error match { 
+      case ApiError.ConfigNotFoundError => HttpResponse(
+        status = StatusCodes.NotFound,
+        entity = HttpEntity(ContentType(MediaTypes.`application/json`), error.asJson.noSpaces)
+      )
+    }
 }
 
