@@ -12,6 +12,9 @@ class ConfigurationService(repository: ConfigurationRepository)(implicit ec: Exe
 
   def readById(id: String): Future[Either[ApiError, Configuration]] = Future {
     val result: Option[Configuration] = repository.findById(id)
-    result.map(conf => Right(conf)).getOrElse(Left(ApiError.ConfigNotFoundError))
+    result match {
+      case Some(conf) => Right(conf)
+      case None => Left(ApiError.ConfigNotFoundError)
+    }
   }
 }
