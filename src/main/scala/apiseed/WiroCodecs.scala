@@ -5,8 +5,7 @@ import apiseed.error.ApiError
 import wiro.server.akkaHttp._
 import wiro.server.akkaHttp.FailSupport._
 
-import akka.http.scaladsl.model.{HttpResponse, StatusCodes, ContentType, HttpEntity}
-import akka.http.scaladsl.model.MediaTypes
+import akka.http.scaladsl.model._
 
 import io.circe.syntax._
 import io.circe.generic.auto._
