@@ -8,11 +8,9 @@ class ConfigurationRepository {
   def findById(id: String): Option[Configuration] = configurations.find(_.id == id)
 
   def delete(id: String): Option[Unit] =
-    findById(id) match {
-      case Some(_) => {
+    findById(id).map(config => {
         configurations = configurations.filterNot(_.id == id)
-        Some(Unit)
+        ()
       }
-      case None => None
-    }
+    )
 }

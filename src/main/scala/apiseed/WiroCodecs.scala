@@ -19,13 +19,5 @@ trait WiroCodecs {
         entity = HttpEntity(ContentType(MediaTypes.`application/json`), error.asJson.noSpaces)
       )
     }
-
-  implicit def unitToResponse: ToHttpResponse[Unit] = result =>
-    result match {
-      case _: Unit => HttpResponse(
-        status = StatusCodes.OK,
-        entity = HttpEntity(ContentType(MediaTypes.`application/json`), result.asJson.noSpaces)
-      )
-    }
 }
 
