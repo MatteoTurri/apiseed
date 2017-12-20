@@ -13,6 +13,9 @@ trait ConfigurationApi {
 
   @query
   def readById(id: String): Future[Either[ApiError, Configuration]]
+
+  @command
+  def delete(id: String): Future[Either[ApiError, Unit]]
 }
 
 class ConfigurationApiImpl(service: ConfigurationService)(implicit ec: ExecutionContext) extends ConfigurationApi {
@@ -20,5 +23,7 @@ class ConfigurationApiImpl(service: ConfigurationService)(implicit ec: Execution
   override def readAll(): Future[Either[ApiError, List[Configuration]]] = service.readAll()
 
   override def readById(id: String): Future[Either[ApiError, Configuration]] = service.readById(id)
+
+  override def delete(id: String): Future[Either[ApiError, Unit]] = service. delete(id)
 }
 
