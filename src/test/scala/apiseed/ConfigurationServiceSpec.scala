@@ -25,12 +25,12 @@ class ConfigurationServiceSpec extends AsyncFlatSpec with Matchers {
     def checkFutureResult(g: R => Assertion): Future[Assertion] = 
       fut.map(_.fold(
         error => fail(error.toString),
-        result => g(result)
+        g
       ))
 
     def checkFutureError(h: E => Assertion): Future[Assertion] = 
       fut.map(_.fold(
-        error => h(error),
+        h,
         result => fail("Unexpected result")
       ))
   }
