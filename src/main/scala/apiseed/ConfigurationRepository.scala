@@ -1,16 +1,16 @@
 package apiseed
 
 import apiseed.model.Configuration
+import scala.collection.concurrent.TrieMap
 
 class ConfigurationRepository {
-  var configurations: List[Configuration] = List()
+  val configurations: TrieMap[String, Configuration] = new TrieMap()
 
-  def findById(id: String): Option[Configuration] = configurations.find(_.id == id)
+  def readAll(): List[Configuration] = configurations.values.toList
 
-  def delete(id: String): Option[Unit] =
-    findById(id).map(config => {
-        configurations = configurations.filterNot(_.id == id)
-        ()
-      }
-    )
+  def readById(id: String): Option[Configuration] = configurations.get(id)
+
+  def delete(id: String): Option[Configuration] = configurations.remove(id)
+
+  def create(conf: Configuration): Option[Configuration] = configurations.putIfAbsent(conf.id, conf)
 }
