@@ -26,7 +26,7 @@ class ConfigurationService(repository: ConfigurationRepository)(implicit ec: Exe
     repository.update(conf).map(_ => ()).someToRight(ApiError.ConfigNotFound)
   }
 
-  implicit class OptionConfigurationConverter[A](option: Option[A]) {
+  implicit class OptionToEitherConverter[A](option: Option[A]) {
     
     def someToRight(error: ApiError): Either[ApiError, A] =
       option match {
