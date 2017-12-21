@@ -37,9 +37,9 @@ class ConfigurationServiceSpec extends fixture.AsyncFlatSpec with EitherValues {
   "The service" should "return ConfigAlreadyExisting error when invoking the create method passing the id of a configuration that is already existing" in { service =>
     for {
       _ <- service.create(foo)
-      x <- service.create(foo)
+      result <- service.create(foo)
     } yield {
-      x.left.get shouldBe ApiError.ConfigAlreadyExisting
+      result.left.value shouldBe ApiError.ConfigAlreadyExisting
     }
   }
 
@@ -47,18 +47,18 @@ class ConfigurationServiceSpec extends fixture.AsyncFlatSpec with EitherValues {
     for {
       _ <- service.create(foo)
       _ <- service.create(bar)
-      x <- service.readAll()
+      result <- service.readAll()
     } yield {
-      x.right.get should contain only (foo, bar)
+      result.right.value should contain only (foo, bar)
     }
   }
 
   "The service" should "return Unit when the delete method is invoked passing the id of an existing configuration" in { service =>
     for {
       _ <- service.create(bar)
-      x <- service.delete(bar.id)
+      result <- service.delete(bar.id)
     } yield {
-      x shouldBe Right(()) 
+      result shouldBe Right(()) 
     }
   }
 
@@ -66,11 +66,11 @@ class ConfigurationServiceSpec extends fixture.AsyncFlatSpec with EitherValues {
     for {
       _ <- service.create(bar)
       _ <- service.create(foo)
-      x <- service.delete(bar.id)
-      y <- service.readAll()
+      deleteResult <- service.delete(bar.id)
+      readAllResult <- service.readAll()
     } yield {
-      x shouldBe Right(())
-      y.right.get should contain only (foo)
+      deleteResult shouldBe Right(())
+      readAllResult.right.value should contain only (foo)
     }
   }
 
