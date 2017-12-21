@@ -10,6 +10,7 @@ class ConfigurationServiceSpec extends fixture.AsyncFlatSpec with EitherValues {
 
   val foo = new Configuration("foo", "My name is foo", "The value is foo")
   val bar = new Configuration("bar", "My name is bar", "The value is bar")
+  val updatedBar = new Configuration("bar", "My new name is still bar", "My new value is still bar")
 
   type FixtureParam = ConfigurationService
   
@@ -71,6 +72,22 @@ class ConfigurationServiceSpec extends fixture.AsyncFlatSpec with EitherValues {
     } yield {
       deleteResult shouldBe Right(())
       readAllResult.right.value should contain only (foo)
+    }
+  }
+
+  "The service" should "return ConfigNotFound error when update method is invoked on a non-existing configuration" in { service =>
+    service.update(foo).checkFutureError(_ shouldBe ApiError.ConfigNotFound)
+  }
+
+  "The service" should "update name and value of the passed configuration when the updated method is invoked on an existing configuration " in { service =>
+    for {
+      _ <- service.create(bar)
+      updateResult <- service.update(updatedBar)
+      readByIdResult <- service.readById(bar.id)
+    } yield {
+      updateResult shouldBe Right(())
+      readByIdResult.right.value.name shouldBe updatedBar.name
+      readByIdResult.right.value.value shouldBe updatedBar.value
     }
   }
 
