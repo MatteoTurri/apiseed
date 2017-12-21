@@ -13,4 +13,6 @@ class ConfigurationRepository {
   def delete(id: String): Option[Configuration] = configurations.remove(id)
 
   def create(conf: Configuration): Option[Configuration] = configurations.putIfAbsent(conf.id, conf)
+
+  def update(conf: Configuration): Option[Configuration] = configurations.replace(conf.id, conf)
 }

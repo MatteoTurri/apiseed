@@ -19,6 +19,9 @@ trait ConfigurationApi {
 
   @command
   def create(conf: Configuration): Future[Either[ApiError, Unit]]
+
+  @command
+  def update(conf: Configuration): Future[Either[ApiError, Unit]]
 }
 
 class ConfigurationApiImpl(service: ConfigurationService)(implicit ec: ExecutionContext) extends ConfigurationApi {
@@ -30,5 +33,7 @@ class ConfigurationApiImpl(service: ConfigurationService)(implicit ec: Execution
   override def delete(id: String): Future[Either[ApiError, Unit]] = service.delete(id)
 
   override def create(conf: Configuration): Future[Either[ApiError, Unit]] = service.create(conf)
+
+  override def update(conf: Configuration): Future[Either[ApiError, Unit]] = service.update(conf)
 }
 
