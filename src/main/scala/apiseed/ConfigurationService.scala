@@ -30,4 +30,11 @@ class ConfigurationService(repository: ConfigurationRepository)(implicit ec: Exe
       case None => Right(())
     }
   }
+
+  def update(conf: Configuration): Future[Either[ApiError, Unit]] = Future {
+    repository.update(conf) match {
+      case Some(_) => Right(()) 
+      case None => Left(ApiError.ConfigNotFound)
+    }
+  }
 }
