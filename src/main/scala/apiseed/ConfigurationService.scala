@@ -11,23 +11,34 @@ class ConfigurationService(repository: ConfigurationRepository)(implicit ec: Exe
   }
 
   def readById(id: String): Future[Either[ApiError, Configuration]] = Future {
-    repository.readById(id) match {
-      case Some(conf) => Right(conf)
-      case None => Left(ApiError.ConfigNotFound)
-    }
+    repository.readById(id).someToRight(ApiError.ConfigNotFound)
   }
 
   def delete(id: String): Future[Either[ApiError, Unit]] = Future {
-    repository.delete(id) match {
-      case Some(_) => Right(())
-      case None => Left(ApiError.ConfigNotFound)
-    }  
+    repository.delete(id).map(_ => ()).someToRight(ApiError.ConfigNotFound)
   }
 
   def create(conf: Configuration): Future[Either[ApiError, Unit]] = Future {
-    repository.create(conf) match {
-      case Some(_) => Left(ApiError.ConfigAlreadyExisting)
-      case None => Right(())
-    }
+    repository.create(conf).someToLeft(ApiError.ConfigAlreadyExisting)
   }
+
+  def update(conf: Configuration): Future[Either[ApiError, Unit]] = Future {
+    repository.update(conf).map(_ => ()).someToRight(ApiError.ConfigNotFound)
+  }
+
+  implicit class OptionToEitherConverter[A](option: Option[A]) {
+    
+    def someToRight(error: ApiError): Either[ApiError, A] =
+      option match {
+        case Some(s) => Right(s)
+        case None => Left(error)
+      }
+
+    def someToLeft(error: ApiError): Either[ApiError, Unit] =
+      option match {
+        case Some(_) => Left(ApiError.ConfigAlreadyExisting)
+        case None => Right(())
+      }
+  }
+
 }
